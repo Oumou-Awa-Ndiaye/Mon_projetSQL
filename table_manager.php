@@ -37,6 +37,22 @@ function getPrimaryKey($table) {
     ];
     return $primaryKeys[$table] ?? 'id'; // Valeur par défaut si non défini
 }
+
+// Vérifier si un nouvel utilisateur doit être ajouté
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_user'])) {
+    $nom = $_POST['Nom'];
+    $email = $_POST['Email'];
+    $motDePasse = password_hash($_POST['MotDePasse'], PASSWORD_BCRYPT); // Hasher le mot de passe
+
+    $sql = "INSERT INTO Users (Nom, Email, MotDePasse) VALUES (?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    if ($stmt->execute([$nom, $email, $motDePasse])) {
+        header("Location: table_manager.php?table=Users");
+        exit;
+    } else {
+        echo "Erreur lors de l'ajout: " . htmlspecialchars($stmt->errorInfo()[2]);
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -50,6 +66,17 @@ function getPrimaryKey($table) {
     <h1>Gestion de la table <?php echo htmlspecialchars($table); ?></h1>
     <a href="main.php">Retour</a>
     
+    <h2>Ajouter un utilisateur</h2>
+    <form method="POST">
+        <label for="Nom">Nom:</label>
+        <input type="text" name="Nom" required>
+        <label for="Email">Email:</label>
+        <input type="email" name="Email" required>
+        <label for="MotDePasse">Mot de passe:</label>
+        <input type="password" name="MotDePasse" required>
+        <button type="submit" name="add_user">Ajouter</button>
+    </form>
+
     <h2>Liste des enregistrements</h2>
     <table border="1">
         <tr>
@@ -81,10 +108,8 @@ function getPrimaryKey($table) {
                 if (isset($row[$primaryKey])) { // Vérifier si la clé primaire existe
                     echo "<td>
                             <a href='Edit/edit.php?table=" . htmlspecialchars($table) . "&id=" . htmlspecialchars($row[$primaryKey]) . "'>Modifier</a> |
-                            <a href='table_manager.php?table=" . htmlspecialchars($table) . "&delete_id=" . htmlspecialchars($row[$primaryKey]) . "'>Supprimer</a>
+                            <a href='table_manager.php?table=" . htmlspecialchars($table) . "&delete_id=" . htmlspecialchars($row[$primaryKey]) . "' onclick=\"return confirm('Êtes-vous sûr de vouloir supprimer cet enregistrement ?');\">Supprimer</a>
                           </td>";
-                } else {
-                    echo "<td>Données manquantes</td>"; // Message d'erreur si la clé n'existe pas
                 }
                 echo "</tr>";
             }
