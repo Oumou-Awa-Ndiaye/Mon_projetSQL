@@ -20,6 +20,97 @@ while ($row = $query->fetch(PDO::FETCH_NUM)) {
 <head>
     <meta charset="UTF-8">
     <title>Gestion des Enregistrements</title>
+    <style>
+        /* Style de base */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fbe4eb;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #d6336c;
+            margin-top: 20px;
+        }
+
+        form {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        label {
+            font-weight: bold;
+            color: #d6336c;
+        }
+
+        /* Style du bouton */
+        button {
+            background-color: #d6336c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #c12c59;
+        }
+
+        /* Style de la table */
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #f1c6d7;
+        }
+
+        th {
+            background-color: #d6336c;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f0f5;
+        }
+
+        tr:hover {
+            background-color: #f1d1e0;
+        }
+
+        /* Style des liens d'actions */
+        .action-links a {
+            color: #d6336c;
+            text-decoration: none;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .action-links a:hover {
+            color: #c12c59;
+        }
+
+        /* Centrer le formulaire et la table */
+        .container {
+            max-width: 800px;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+    </style>
 </head>
 <body>
     <h1>Sélectionnez une table pour gérer ses enregistrements :</h1>
